@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Signup - Shortify</title>
+<link rel="stylesheet" href="/static/auth.css">
+</head>
+
+<body>
+
+<div class="hero">
+    <h1 class="brand-title">Shortify</h1>
+    <p class="tagline">Smart URL shortening with tracking & expiry</p>
+</div>
+
+<div class="auth-container">
+    <form class="card" onsubmit="signup(event)">
+
+        <div class="title">Create Account</div>
+        <div class="subtitle">Start shortening your links</div>
+
+        <input id="email" placeholder="Email" required>
+        <input id="password" type="password" placeholder="Password" required>
+        <input id="confirmPassword" type="password" placeholder="Confirm Password" required>
+
+        <button type="submit">Signup</button>
+
+        <div class="switch">
+            Already have an account? <a href="/login">Login</a>
+        </div>
+
+    </form>
+</div>
+
+<script>
+async function signup(event){
+    event.preventDefault();
+
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+    const confirmPassword = document.getElementById("confirmPassword").value;
+
+    if(password !== confirmPassword){
+        alert("Passwords do not match");
+        document.getElementById("confirmPassword").value = "";
+        return;
+    }
+
+    const res = await fetch("/signup", {
+        method:"POST",
+        credentials:"include",
+        headers:{"Content-Type":"application/json"},
+        body: JSON.stringify({email, password})
+    });
+
+    const data = await res.json();
+
+    if(res.ok){
+        alert("Signup successful");
+        window.location.href = "/login";
+    } else {
+        alert(data.error);
+    }
+}
+</script>
+
+</body>
+</html>
