@@ -1,62 +1,117 @@
 from flask import Blueprint, request, jsonify, session
 from models import db, User
-from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.security import (
+    generate_password_hash,
+    check_password_hash
+)
 
 auth_bp = Blueprint('auth', __name__)
 
+
 @auth_bp.route('/signup', methods=['POST'])
 def signup():
-    data = request.get_json()
 
-    email = data.get('email')
-    password = data.get('password')
+    try:
 
-    if not email or not password:
-        return jsonify({"error": "Email and password required"}), 400
+        data = request.get_json()
 
-    if len(password) < 6:
-        return jsonify({"error": "Password too short"}), 400
+        email = data.get('email').strip().lower()
+        password = data.get('password')
 
-    existing = User.query.filter_by(email=email).first()
-    if existing:
-        return jsonify({"error": "User already exists"}), 400
+        if not email or not password:
+            return jsonify({
+                "error": "Email and password required"
+            }), 400
 
-    hashed = generate_password_hash(password)
+        if "@" not in email:
+            return jsonify({
+                "error": "Invalid email"
+            }), 400
 
-    user = User(email=email, password=hashed)
-    db.session.add(user)
-    db.session.commit()
+        if len(password) < 6:
+            return jsonify({
+                "error": "Password too short"
+            }), 400
 
-    return jsonify({"message": "Signup successful"})
+        existing = User.query.filter_by(
+            email=email
+        ).first()
+
+        if existing:
+            return jsonify({
+                "error": "User already exists"
+            }), 400
+
+        hashed = generate_password_hash(password)
+
+        user = User(
+            email=email,
+            password=hashed
+        )
+
+        db.session.add(user)
+        db.session.commit()
+
+        return jsonify({
+            "message": "Signup successful"
+        })
+
+    except Exception as e:
+
+        print("SIGNUP ERROR:", e)
+
+        return jsonify({
+            "error": "Internal Server Error"
+        }), 500
 
 
 @auth_bp.route('/login', methods=['POST'])
 def login():
-    data = request.get_json()
 
-    email = data.get('email')
-    password = data.get('password')
+    try:
 
-    user = User.query.filter_by(email=email).first()
+        data = request.get_json()
 
-    if not user:
-        return jsonify({"error": "Invalid credentials"}), 401
+        email = data.get('email').strip().lower()
+        password = data.get('password')
 
-    if not check_password_hash(user.password, password):
-        return jsonify({"error": "Invalid credentials"}), 401
+        user = User.query.filter_by(
+            email=email
+        ).first()
 
-    session["user_id"] = user.id
+        if not user:
+            return jsonify({
+                "error": "Invalid credentials"
+            }), 401
 
-    return jsonify({"message": "Login successful"})
+        if not check_password_hash(
+            user.password,
+            password
+        ):
+            return jsonify({
+                "error": "Invalid credentials"
+            }), 401
 
-    print("EMAIL:", email)
-    print("PASSWORD:", password)
+        session["user_id"] = user.id
 
-    user = User.query.filter_by(email=email).first()
-    print("DB USER:", user)
-    print("DB PASSWORD:", user.password if user else None)
+        return jsonify({
+            "message": "Login successful"
+        })
+
+    except Exception as e:
+
+        print("LOGIN ERROR:", e)
+
+        return jsonify({
+            "error": "Internal Server Error"
+        }), 500
+
 
 @auth_bp.route('/logout')
 def logout():
-    session.pop("user_id", None)
-    return jsonify({"message": "Logged out"})
+
+    session.clear()
+
+    return jsonify({
+        "message": "Logged out"
+    })

@@ -4,43 +4,69 @@
 <title>Redirecting - Shortify</title>
 
 <style>
-body {
-    font-family: 'Segoe UI', sans-serif;
-    background: #f5f7fb;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+
+body{
+    font-family:'Segoe UI',sans-serif;
+    background:#f5f7fb;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    margin:0;
 }
 
-.card {
-    background: white;
-    padding: 30px;
-    border-radius: 12px;
-    text-align: center;
-    width: 400px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+.card{
+    background:white;
+    padding:35px;
+    border-radius:14px;
+    text-align:center;
+    width:420px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.08);
 }
 
-h2 {
-    margin-bottom: 10px;
+h2{
+    margin-bottom:10px;
+    color:#111827;
 }
 
-.url {
-    color: #2563eb;
-    word-break: break-all;
-    margin: 10px 0;
+.url{
+    color:#2563eb;
+    word-break:break-all;
+    margin:15px 0;
+    background:#f3f4f6;
+    padding:12px;
+    border-radius:8px;
+    max-height:80px;
+    overflow:auto;
 }
 
-button {
-    margin-top: 15px;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 6px;
-    background: #2563eb;
-    color: white;
-    cursor: pointer;
+.countdown{
+    margin-top:15px;
+    color:#374151;
 }
+
+.buttons{
+    margin-top:20px;
+}
+
+button{
+    padding:10px 18px;
+    border:none;
+    border-radius:6px;
+    color:white;
+    cursor:pointer;
+    font-size:14px;
+}
+
+.go-btn{
+    background:#2563eb;
+}
+
+.cancel-btn{
+    background:#ef4444;
+    margin-left:10px;
+}
+
 </style>
 
 </head>
@@ -48,32 +74,80 @@ button {
 <body>
 
 <div class="card">
-    <h2>Redirecting...</h2>
 
-    <p>You are going to:</p>
-    <p class="url">{{ url }}</p>
+    <h2>Preview Destination</h2>
 
-    <p>Redirecting in <span id="count">3</span> seconds</p>
+    <p>You are being redirected to:</p>
 
-    <button onclick="goNow()">Go Now</button>
+    <div class="url">
+        {{ url }}
+    </div>
+
+    <div class="countdown">
+        Redirecting in
+        <span id="count">3 seconds</span>
+    </div>
+
+    <div class="buttons">
+
+        <button class="go-btn" onclick="goNow()">
+            Go Now
+        </button>
+
+        <button class="cancel-btn" onclick="cancelRedirect()">
+            Cancel
+        </button>
+
+    </div>
+
 </div>
 
 <script>
+
 let count = 3;
 
 const interval = setInterval(() => {
+
     count--;
-    document.getElementById("count").innerText = count;
+
+    document.getElementById("count").innerText =
+        count + (count === 1 ? " second" : " seconds");
 
     if(count === 0){
+
         clearInterval(interval);
+
         window.location.href = "{{ url }}";
     }
+
 }, 1000);
 
 function goNow(){
+
     window.location.href = "{{ url }}";
 }
+
+function cancelRedirect(){
+
+    clearInterval(interval);
+
+    fetch("/check-session", {
+        credentials:"include"
+    })
+
+    .then(res => res.json())
+
+    .then(data => {
+
+        if(data.logged_in){
+            window.location.replace("/dashboard");
+        } else {
+            window.location.replace("/login");
+        }
+
+    });
+}
+
 </script>
 
 </body>

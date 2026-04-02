@@ -2,65 +2,188 @@
 <html>
 <head>
 <title>Signup - Shortify</title>
+
 <link rel="stylesheet" href="/static/auth.css">
+
+<style>
+
+.toast{
+    position:fixed;
+    bottom:30px;
+    right:30px;
+    background:#111827;
+    color:white;
+    padding:12px 18px;
+    border-radius:8px;
+    opacity:0;
+    transition:0.3s;
+    font-size:14px;
+}
+
+button:disabled{
+    opacity:0.7;
+    cursor:not-allowed;
+}
+
+</style>
+
 </head>
 
 <body>
 
+<div id="toast" class="toast"></div>
+
 <div class="hero">
+
     <h1 class="brand-title">Shortify</h1>
-    <p class="tagline">Smart URL shortening with tracking & expiry</p>
+
+    <p class="tagline">
+        Smart URL shortening with tracking & expiry
+    </p>
+
 </div>
 
 <div class="auth-container">
+
     <form class="card" onsubmit="signup(event)">
 
         <div class="title">Create Account</div>
-        <div class="subtitle">Start shortening your links</div>
 
-        <input id="email" placeholder="Email" required>
-        <input id="password" type="password" placeholder="Password" required>
-        <input id="confirmPassword" type="password" placeholder="Confirm Password" required>
+        <div class="subtitle">
+            Start shortening your links
+        </div>
 
-        <button type="submit">Signup</button>
+        <input
+            id="email"
+            type="email"
+            placeholder="Email"
+            required
+        >
+
+        <input
+            id="password"
+            type="password"
+            placeholder="Password"
+            required
+        >
+
+        <input
+            id="confirmPassword"
+            type="password"
+            placeholder="Confirm Password"
+            required
+        >
+
+        <button id="signupBtn" type="submit">
+            Signup
+        </button>
 
         <div class="switch">
-            Already have an account? <a href="/login">Login</a>
+            Already have an account?
+            <a href="/login">Login</a>
         </div>
 
     </form>
+
 </div>
 
 <script>
+
+function showToast(msg){
+
+    const toast = document.getElementById("toast");
+
+    toast.innerText = msg;
+
+    toast.style.opacity = "1";
+
+    setTimeout(() => {
+        toast.style.opacity = "0";
+    }, 2500);
+}
+
 async function signup(event){
+
     event.preventDefault();
 
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
-    const confirmPassword = document.getElementById("confirmPassword").value;
+    const btn = document.getElementById("signupBtn");
 
-    if(password !== confirmPassword){
-        alert("Passwords do not match");
-        document.getElementById("confirmPassword").value = "";
+    const email =
+        document.getElementById("email").value.trim();
+
+    const password =
+        document.getElementById("password").value;
+
+    const confirmPassword =
+        document.getElementById("confirmPassword").value;
+
+    if(!email.includes("@")){
+        showToast("Enter a valid email");
         return;
     }
 
-    const res = await fetch("/signup", {
-        method:"POST",
-        credentials:"include",
-        headers:{"Content-Type":"application/json"},
-        body: JSON.stringify({email, password})
-    });
+    if(password.length < 6){
+        showToast("Password must be at least 6 characters");
+        return;
+    }
 
-    const data = await res.json();
+    if(password !== confirmPassword){
 
-    if(res.ok){
-        alert("Signup successful");
-        window.location.href = "/login";
-    } else {
-        alert(data.error);
+        showToast("Passwords do not match");
+
+        document.getElementById("confirmPassword").value = "";
+
+        return;
+    }
+
+    btn.innerText = "Creating...";
+    btn.disabled = true;
+
+    try{
+
+        const res = await fetch("/signup", {
+
+            method:"POST",
+
+            credentials:"include",
+
+            headers:{
+                "Content-Type":"application/json"
+            },
+
+            body: JSON.stringify({
+                email,
+                password
+            })
+        });
+
+        const data = await res.json();
+
+        btn.innerText = "Signup";
+        btn.disabled = false;
+
+        if(res.ok){
+
+            showToast("Signup successful!");
+
+            setTimeout(() => {
+                window.location.href = "/login";
+            }, 1000);
+
+        } else {
+
+            showToast(data.error || "Signup failed");
+        }
+
+    } catch(err){
+
+        btn.innerText = "Signup";
+        btn.disabled = false;
+
+        showToast("Server error");
     }
 }
+
 </script>
 
 </body>

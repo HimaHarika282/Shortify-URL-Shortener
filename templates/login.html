@@ -2,55 +2,169 @@
 <html>
 <head>
 <title>Login - Shortify</title>
+
 <link rel="stylesheet" href="/static/auth.css">
+
+<style>
+
+.toast{
+    position:fixed;
+    bottom:30px;
+    right:30px;
+    background:#111827;
+    color:white;
+    padding:12px 18px;
+    border-radius:8px;
+    opacity:0;
+    transition:0.3s;
+    font-size:14px;
+}
+
+button:disabled{
+    opacity:0.7;
+    cursor:not-allowed;
+}
+
+</style>
+
 </head>
 
 <body>
+
+<div id="toast" class="toast"></div>
+
 <div class="hero">
+
     <h1 class="brand-title">Shortify</h1>
-    <p class="tagline">Smart URL shortening with tracking & expiry</p>
+
+    <p class="tagline">
+        Smart URL shortening with tracking & expiry
+    </p>
+
 </div>
 
 <div class="auth-container">
+
     <form class="card" onsubmit="login(event)">
 
         <div class="title">Welcome Back</div>
-        <div class="subtitle">Login to your account</div>
 
-        <input id="email" placeholder="Email" required>
-        <input id="password" type="password" placeholder="Password" required>
+        <div class="subtitle">
+            Login to your account
+        </div>
 
-        <button type="submit">Login</button>
+        <input
+            id="email"
+            type="email"
+            placeholder="Email"
+            required
+        >
+
+        <input
+            id="password"
+            type="password"
+            placeholder="Password"
+            required
+        >
+
+        <button id="loginBtn" type="submit">
+            Login
+        </button>
 
         <div class="switch">
-            Don’t have an account? <a href="/signup">Sign up</a>
+            Don’t have an account?
+            <a href="/signup">Sign up</a>
         </div>
 
     </form>
+
 </div>
 
 <script>
+
+function showToast(msg){
+
+    const toast = document.getElementById("toast");
+
+    toast.innerText = msg;
+
+    toast.style.opacity = "1";
+
+    setTimeout(() => {
+        toast.style.opacity = "0";
+    }, 2500);
+}
+
 async function login(event){
-    event.preventDefault();  
 
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
+    event.preventDefault();
 
-    const res = await fetch("/login", {
-        method:"POST",
-        credentials:"include",
-        headers:{"Content-Type":"application/json"},
-        body: JSON.stringify({email, password})
-    });
+    const btn = document.getElementById("loginBtn");
 
-    const data = await res.json();
+    const email =
+        document.getElementById("email").value.trim();
 
-    if(res.ok){
-        window.location.href = "/dashboard";
-    } else {
-        alert(data.error);
+    const password =
+        document.getElementById("password").value;
+
+    if(!email.includes("@")){
+        showToast("Enter a valid email");
+        return;
+    }
+
+    if(password.length < 6){
+        showToast("Password too short");
+        return;
+    }
+
+    btn.innerText = "Logging in...";
+    btn.disabled = true;
+
+    try{
+
+        const res = await fetch("/login", {
+
+            method:"POST",
+
+            credentials:"include",
+
+            headers:{
+                "Content-Type":"application/json"
+            },
+
+            body: JSON.stringify({
+                email,
+                password
+            })
+        });
+
+        const data = await res.json();
+
+        btn.innerText = "Login";
+        btn.disabled = false;
+
+        if(res.ok){
+
+            showToast("Login successful!");
+
+            setTimeout(() => {
+                window.location.href = "/dashboard";
+            }, 800);
+
+        } else {
+
+            showToast(data.error || "Login failed");
+        }
+
+    } catch(err){
+
+        btn.innerText = "Login";
+        btn.disabled = false;
+
+        showToast("Server error");
     }
 }
+
 </script>
 
 </body>
