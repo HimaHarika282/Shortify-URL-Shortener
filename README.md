@@ -89,28 +89,21 @@ User → Flask Backend → Service Layer → Database (SQLite)
 * `GET /dashboard` → Fetch user URLs & analytics
 
 ---
-
-## 📸 Demo
+## 🎥 Demo Video
 
 https://github.com/user-attachments/assets/cde645e3-0b47-4c6c-b72d-de08ecb34ba4
-
-## 🎥 Demo Video
 
 ---
 
 ## 📸 Demo
 
-### 🔹 URL Dashboard, Stats and Analytics
-
+### 🔹 URL Dashboard & Analytics
 ![Analytics](assets/analytics.png)
 
 ![Dashboard](assets/dashboard.png)
 
 ### 🔹 Redirect / Preview Page
-
 ![Preview](assets/preview.png)
-
-
 ---
 
 ## 🛠 Tech Stack
