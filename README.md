@@ -207,14 +207,3 @@ Shortify/
 Developed as a full-stack system to demonstrate backend engineering, API design, and real-world application development.
 
 ---
-
-## 📌 Summary
-
-Shortify showcases:
-
-* Full-stack development
-* Backend system design
-* RESTful API structuring
-* Database modeling and ORM usage
-* Real-world feature implementation
-* Deployment and production awareness
