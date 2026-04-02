@@ -92,9 +92,9 @@ User → Flask Backend → Service Layer → Database (SQLite)
 
 ## 📸 Demo
 
-## 🎥 Demo Video
+https://github.com/user-attachments/assets/cde645e3-0b47-4c6c-b72d-de08ecb34ba4
 
-https://github.com/user-attachments/assets/YOUR_VIDEO_LINK
+## 🎥 Demo Video
 
 ---
 
