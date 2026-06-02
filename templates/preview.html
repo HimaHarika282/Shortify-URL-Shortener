@@ -5,6 +5,7 @@
 
 <style>
 
+<<<<<<< HEAD
 body{
     font-family:'Segoe UI',sans-serif;
     background:#f5f7fb;
@@ -33,11 +34,62 @@ h2{
     color:#2563eb;
     word-break:break-all;
     margin:15px 0;
+=======
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background: #f5f7fb;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    position: relative;
+}
+
+/* LOGO */
+.logo{
+    position:absolute;
+    top:40px;
+    font-size:42px;
+    font-weight:800;
+    background: linear-gradient(90deg,#2563eb,#22c55e);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+
+/* CARD */
+.card {
+    background: white;
+    padding: 35px;
+    border-radius: 14px;
+    text-align: center;
+    width: 420px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+}
+
+h2 {
+    margin-bottom: 10px;
+    color: #111827;
+}
+
+.subtitle{
+    color:#6b7280;
+    margin-bottom:20px;
+    font-size:14px;
+}
+
+/* URL BOX */
+.url {
+    color: #2563eb;
+    word-break: break-all;
+    margin: 15px 0;
+>>>>>>> d059f08 (final deployment stable version)
     background:#f3f4f6;
     padding:12px;
     border-radius:8px;
     max-height:80px;
     overflow:auto;
+<<<<<<< HEAD
 }
 
 .countdown{
@@ -60,6 +112,39 @@ button{
 
 .go-btn{
     background:#2563eb;
+=======
+    font-size:14px;
+}
+
+/* COUNTDOWN */
+.countdown{
+    margin-top:15px;
+    color:#374151;
+    font-size:15px;
+}
+
+/* BUTTONS */
+.btn-group{
+    margin-top:20px;
+}
+
+button {
+    padding: 10px 18px;
+    border: none;
+    border-radius: 6px;
+    color: white;
+    cursor: pointer;
+    font-size:14px;
+    transition:0.2s;
+}
+
+.go-btn{
+    background: #2563eb;
+}
+
+.go-btn:hover{
+    background:#1d4ed8;
+>>>>>>> d059f08 (final deployment stable version)
 }
 
 .cancel-btn{
@@ -67,29 +152,51 @@ button{
     margin-left:10px;
 }
 
+<<<<<<< HEAD
+=======
+.cancel-btn:hover{
+    background:#dc2626;
+}
+
+>>>>>>> d059f08 (final deployment stable version)
 </style>
 
 </head>
 
 <body>
 
+<h1 class="logo">Shortify</h1>
+
 <div class="card">
 
     <h2>Preview Destination</h2>
 
+<<<<<<< HEAD
     <p>You are being redirected to:</p>
+=======
+    <p class="subtitle">
+        You are being redirected to:
+    </p>
+>>>>>>> d059f08 (final deployment stable version)
 
     <div class="url">
         {{ url }}
     </div>
 
     <div class="countdown">
+<<<<<<< HEAD
         Redirecting in
         <span id="count">3 seconds</span>
     </div>
 
     <div class="buttons">
 
+=======
+        Redirecting in <span id="count">3 seconds</span>
+    </div>
+
+    <div class="btn-group">
+>>>>>>> d059f08 (final deployment stable version)
         <button class="go-btn" onclick="goNow()">
             Go Now
         </button>
@@ -97,7 +204,10 @@ button{
         <button class="cancel-btn" onclick="cancelRedirect()">
             Cancel
         </button>
+<<<<<<< HEAD
 
+=======
+>>>>>>> d059f08 (final deployment stable version)
     </div>
 
 </div>
@@ -140,9 +250,15 @@ function cancelRedirect(){
     .then(data => {
 
         if(data.logged_in){
+<<<<<<< HEAD
             window.location.replace("/dashboard");
         } else {
             window.location.replace("/login");
+=======
+            window.location.href = "/dashboard";
+        } else {
+            window.location.href = "/login";
+>>>>>>> d059f08 (final deployment stable version)
         }
 
     });

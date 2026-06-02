@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 from flask import Blueprint, request, jsonify, session, render_template
+=======
+from flask import Blueprint, request, jsonify, render_template, session
+>>>>>>> d059f08 (final deployment stable version)
 from services.url_service import create_short_url, get_original_url
 from models import db, URL, Click
 from sqlalchemy import func
@@ -39,17 +43,25 @@ def shorten_url():
             return jsonify({"error": "Failed to create URL"}), 500
 
         return jsonify({
+<<<<<<< HEAD
             "short_url":
             request.url_root.rstrip("/") + "/" + short_code
+=======
+            "short_url": request.url_root.rstrip("/") + "/" + short_code
+>>>>>>> d059f08 (final deployment stable version)
         })
 
     except Exception as e:
 
         print("ERROR:", e)
+<<<<<<< HEAD
 
         return jsonify({
             "error": "Internal Server Error"
         }), 500
+=======
+        return jsonify({"error": "Internal Server Error"}), 500
+>>>>>>> d059f08 (final deployment stable version)
 
 
 @url_bp.route('/<short_code>')
@@ -70,12 +82,17 @@ def redirect_url(short_code):
         )
 
     except Exception as e:
+<<<<<<< HEAD
 
         print("REDIRECT ERROR:", e)
 
         return jsonify({
             "error": "Internal Server Error"
         }), 500
+=======
+        print("REDIRECT ERROR:", e)
+        return jsonify({"error": "Internal Server Error"}), 500
+>>>>>>> d059f08 (final deployment stable version)
 
 
 @url_bp.route('/delete/<short_code>', methods=['DELETE'])
@@ -97,9 +114,13 @@ def delete_url(short_code):
     db.session.delete(url)
     db.session.commit()
 
+<<<<<<< HEAD
     return jsonify({
         "message": "Deleted successfully"
     })
+=======
+    return jsonify({"message": "Deleted successfully"})
+>>>>>>> d059f08 (final deployment stable version)
 
 
 @url_bp.route('/stats/<short_code>')
@@ -123,9 +144,16 @@ def stats(short_code):
 
     return jsonify({
         "clicks": url.click_count,
+<<<<<<< HEAD
         "expiry_date":
         url.expiry_date.isoformat()
         if url.expiry_date else None
+=======
+        "expiry_date": (
+            url.expiry_date.isoformat()
+            if url.expiry_date else None
+        )
+>>>>>>> d059f08 (final deployment stable version)
     })
 
 
@@ -150,9 +178,16 @@ def get_user_urls():
             "code": u.short_code,
             "clicks": u.click_count,
             "created": u.created_at.isoformat(),
+<<<<<<< HEAD
             "expiry":
             u.expiry_date.isoformat()
             if u.expiry_date else None
+=======
+            "expiry": (
+                u.expiry_date.isoformat()
+                if u.expiry_date else None
+            )
+>>>>>>> d059f08 (final deployment stable version)
         }
 
         for u in urls
@@ -212,21 +247,34 @@ def analytics():
         recent_url = recent.original_url
 
     click_data = db.session.query(
+<<<<<<< HEAD
 
         func.date(Click.clicked_at),
         func.count(Click.id)
 
     ).join(
 
+=======
+        func.date(Click.clicked_at),
+        func.count(Click.id)
+
+    ).join(
+>>>>>>> d059f08 (final deployment stable version)
         URL,
         Click.url_id == URL.id
 
     ).filter(
+<<<<<<< HEAD
 
         URL.user_id == user_id
 
     ).group_by(
 
+=======
+        URL.user_id == user_id
+
+    ).group_by(
+>>>>>>> d059f08 (final deployment stable version)
         func.date(Click.clicked_at)
 
     ).all()
@@ -235,7 +283,10 @@ def analytics():
     counts = [row[1] for row in click_data]
 
     return jsonify({
+<<<<<<< HEAD
 
+=======
+>>>>>>> d059f08 (final deployment stable version)
         "total_urls": total_urls,
         "total_clicks": total_clicks,
         "top_url": top_url,

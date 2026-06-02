@@ -1,14 +1,25 @@
-from flask import Flask
-from models import db, URL, User  
+from flask import Flask, render_template, session, redirect
+from models import db
 import config
-from routes.url_routes import url_bp
-from flask import render_template
-from routes.auth_routes import auth_bp
 import os
 
+from routes.url_routes import url_bp
+from routes.auth_routes import auth_bp
+
 app = Flask(__name__)
+
+# Load config
 app.config.from_object(config)
+
+# Secret key
 app.secret_key = os.environ.get("SECRET_KEY", "fallback_secret")
+
+# IMPORTANT FOR RENDER HTTPS SESSIONS
+app.config["SESSION_COOKIE_SECURE"] = True
+app.config["SESSION_COOKIE_HTTPONLY"] = True
+app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
+
+# Initialize DB
 db.init_app(app)
 
 with app.app_context():
@@ -27,16 +38,25 @@ def login_page():
 def signup_page():
     return render_template('signup.html')
 
-from flask import session, redirect
-
 @app.route('/dashboard')
 def dashboard():
+
     if not session.get("user_id"):
         return redirect('/login')
+
     return render_template('dashboard.html')
+
+@app.route('/check-session')
+def check_session():
+
+    if session.get("user_id"):
+        return {"logged_in": True}
+
+    return {"logged_in": False}
 
 app.register_blueprint(url_bp)
 app.register_blueprint(auth_bp)
+
 
 if __name__ == "__main__":
     app.run(debug=True)
