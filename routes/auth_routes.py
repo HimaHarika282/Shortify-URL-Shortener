@@ -79,35 +79,6 @@ def login():
             email=email
         ).first()
 
-<<<<<<< HEAD
-        if not user:
-            return jsonify({
-                "error": "Invalid credentials"
-            }), 401
-
-        if not check_password_hash(
-            user.password,
-            password
-        ):
-            return jsonify({
-                "error": "Invalid credentials"
-            }), 401
-
-        session["user_id"] = user.id
-
-        return jsonify({
-            "message": "Login successful"
-        })
-
-    except Exception as e:
-
-        print("LOGIN ERROR:", e)
-
-        return jsonify({
-            "error": "Internal Server Error"
-        }), 500
-
-=======
     session["user_id"] = user.id
     print("EMAIL:", email)
     print("PASSWORD:", password)
@@ -116,7 +87,6 @@ def login():
     return jsonify({"message": "Login successful"})
 
     
->>>>>>> d059f08 (final deployment stable version)
 
 @auth_bp.route('/logout')
 def logout():

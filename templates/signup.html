@@ -36,17 +36,9 @@ button:disabled{
 <div class="hero">
 
     <h1 class="brand-title">Shortify</h1>
-<<<<<<< HEAD
-
     <p class="tagline">
         Smart URL shortening with tracking & expiry
     </p>
-
-=======
-    <p class="tagline">
-        Smart URL shortening with tracking & expiry
-    </p>
->>>>>>> d059f08 (final deployment stable version)
 </div>
 
 <div class="auth-container">
@@ -100,10 +92,6 @@ function showToast(msg){
     const toast = document.getElementById("toast");
 
     toast.innerText = msg;
-<<<<<<< HEAD
-
-=======
->>>>>>> d059f08 (final deployment stable version)
     toast.style.opacity = "1";
 
     setTimeout(() => {
@@ -126,28 +114,19 @@ async function signup(event){
     const confirmPassword =
         document.getElementById("confirmPassword").value;
 
-<<<<<<< HEAD
-=======
     // ✅ EMAIL VALIDATION
->>>>>>> d059f08 (final deployment stable version)
     if(!email.includes("@")){
         showToast("Enter a valid email");
         return;
     }
 
-<<<<<<< HEAD
-=======
     // ✅ PASSWORD LENGTH
->>>>>>> d059f08 (final deployment stable version)
     if(password.length < 6){
         showToast("Password must be at least 6 characters");
         return;
     }
 
-<<<<<<< HEAD
-=======
     // ✅ PASSWORD MATCH
->>>>>>> d059f08 (final deployment stable version)
     if(password !== confirmPassword){
 
         showToast("Passwords do not match");
@@ -157,10 +136,7 @@ async function signup(event){
         return;
     }
 
-<<<<<<< HEAD
-=======
     // ✅ LOADING STATE
->>>>>>> d059f08 (final deployment stable version)
     btn.innerText = "Creating...";
     btn.disabled = true;
 

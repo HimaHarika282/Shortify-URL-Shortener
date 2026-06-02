@@ -3,10 +3,6 @@ from datetime import datetime
 
 db = SQLAlchemy()
 
-<<<<<<< HEAD
-
-=======
->>>>>>> d059f08 (final deployment stable version)
 class User(db.Model):
 
     __tablename__ = 'users'
@@ -24,10 +20,7 @@ class User(db.Model):
         nullable=False
     )
 
-<<<<<<< HEAD
-=======
     # ✅ RELATIONSHIP MUST BE INSIDE USER
->>>>>>> d059f08 (final deployment stable version)
     urls = db.relationship(
         'URL',
         backref='user',
@@ -50,11 +43,7 @@ class URL(db.Model):
     )
 
     short_code = db.Column(
-<<<<<<< HEAD
-        db.String(10),
-=======
         db.String(50),
->>>>>>> d059f08 (final deployment stable version)
         unique=True,
         nullable=False
     )

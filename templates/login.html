@@ -90,10 +90,6 @@ function showToast(msg){
     const toast = document.getElementById("toast");
 
     toast.innerText = msg;
-<<<<<<< HEAD
-
-=======
->>>>>>> d059f08 (final deployment stable version)
     toast.style.opacity = "1";
 
     setTimeout(() => {
@@ -113,28 +109,19 @@ async function login(event){
     const password =
         document.getElementById("password").value;
 
-<<<<<<< HEAD
-=======
     // ✅ EMAIL VALIDATION
->>>>>>> d059f08 (final deployment stable version)
     if(!email.includes("@")){
         showToast("Enter a valid email");
         return;
     }
 
-<<<<<<< HEAD
-=======
     // ✅ PASSWORD VALIDATION
->>>>>>> d059f08 (final deployment stable version)
     if(password.length < 6){
         showToast("Password too short");
         return;
     }
 
-<<<<<<< HEAD
-=======
     // ✅ LOADING STATE
->>>>>>> d059f08 (final deployment stable version)
     btn.innerText = "Logging in...";
     btn.disabled = true;
 
